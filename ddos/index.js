@@ -2,7 +2,7 @@ const http = require("http");
 
 function makeRequest() {
   return new Promise((resolve, reject) => {
-    const req = http.request("http://localhost", res => {
+    const req = http.request("http://172.17.209.119:30001", res => {
       res.once("data", data => {
         resolve(data.toString());
       });
@@ -22,7 +22,7 @@ function delay(time) {
   });
 }
 
-const MAX_REQUEST = 3;
+const MAX_REQUEST = 20;
 const DELAY = 100;
 
 async function normal() {
@@ -47,7 +47,7 @@ async function ddos() {
     try {
       const responses = await Promise.all(reqs.map(() => makeRequest()));
       for (let res in responses) {
-        console.log(res);
+        console.log(responses[res]);
       }
     } catch (err) {
       console.error(err);
@@ -55,4 +55,4 @@ async function ddos() {
   }
 }
 
-normal();
+ddos();

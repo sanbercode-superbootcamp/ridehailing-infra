@@ -1,11 +1,10 @@
-const https = require("https");
+const http = require("http");
 
 function makeRequest() {
   return new Promise((resolve, reject) => {
-    const req = https.request("https://hello.qh.sirus.dev", res => {
-      res.once("data", datas => {
-        const data = JSON.parse(datas);
-        resolve(data[2].ip);
+    const req = http.request("http://localhost", res => {
+      res.once("data", data => {
+        resolve(data.toString());
       });
     });
 
@@ -23,14 +22,18 @@ function delay(time) {
   });
 }
 
-const MAX_REQUEST = 1000;
-const DELAY = 10;
+const MAX_REQUEST = 3;
+const DELAY = 100;
 
 async function normal() {
   while(1) {
     await delay(DELAY);
-    const ip = await makeRequest();
-    console.log(ip);
+    try {
+      const res = await makeRequest();
+      console.log(res);
+    } catch (err) {
+      console.error(err.message);
+    }
   }
 }
 
@@ -42,9 +45,9 @@ async function ddos() {
   while(1) {
     await delay(DELAY);
     try {
-      const ips = await Promise.all(reqs.map(() => makeRequest()));
-      for (let ip in ips) {
-        console.log(ips[ip]);
+      const responses = await Promise.all(reqs.map(() => makeRequest()));
+      for (let res in responses) {
+        console.log(res);
       }
     } catch (err) {
       console.error(err);

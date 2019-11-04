@@ -1,22 +1,16 @@
 const http = require("http");
-const { networkInterfaces } = require("os");
 
 const server = http.createServer((req, res) => {
-  const ifaces = networkInterfaces();
-  const ips = [];
-  for (let iface in ifaces) {
-    const ifs = ifaces[iface];
-    ifs.forEach(ip =>
-      ips.push({
-        ip: "ip -> " + ip.address,
-        cidr: ip.cidr,
-        interface: iface
-      })
-    );
+  var flood = '';
+  while(flood.length < 999999) {
+    flood = flood + 'x';
   }
-  res.setHeader("Content-Type", "application/json");
-  res.write(JSON.stringify(ips));
+  res.write('ok');
   res.end();
 });
 
-server.listen(80);
+const PORT = 80;
+
+server.listen(PORT, () => {
+  process.stdout.write('server listen on port ' + PORT);
+});

@@ -8,7 +8,7 @@ const server = http.createServer((req, res) => {
     const ifs = ifaces[iface];
     ifs.forEach(ip =>
       ips.push({
-        ip: ip.address,
+        ip: "ip -> " + ip.address,
         cidr: ip.cidr,
         interface: iface
       })
